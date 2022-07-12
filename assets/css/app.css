@@ -23,6 +23,21 @@ html, body {
     color: #343A40;
     font-size: 20px;
 }
+.add-btn {
+    position: absolute;
+    right: 0;
+}
+.datalist {
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    z-index: 9;
+    background: rgba(255,255,255,.9);
+    width: 100%;
+}
+.datalist > li {
+    padding: 10px;
+}
 .no-value {
     border: 2px solid red !important;
 }

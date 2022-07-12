@@ -3,3 +3,4 @@
     unset($_SESSION['validation']);
     unset($_SESSION['old']);
     unset($_SESSION['error']);
+    unset($_SESSION['alert']);
