@@ -27,8 +27,22 @@ class Database{
         $query = 'SELECT * FROM '.$table.' WHERE '.$column.' = :id';
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id',$id);
+        return $this->returnCountBool($stmt);
+    }
+    public function allWhereIdCompare($table,$column1,$value1,$column2,$value2,$compare = 'equal'){
+        if($compare == 'equal'){//comparing values where surogate keys are equal to values provided
+            $query = 'SELECT * FROM ' . $table . ' WHERE ' . $column1 . ' = :value1 AND ' . $column2 . ' = :value2';
+        }else{//comparing columns where surrogate keys are not equal to value provided
+            $query = 'SELECT * FROM ' . $table . ' WHERE ' . $column1 . ' != :value1 AND ' . $column2 . ' = :value2';
+        }
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':value1',$value1);
+        $stmt->bindParam(':value2',$value2);
+        return $this->returnCountBool($stmt);
+    }
+    public function returnCountBool($stmt){
         $stmt->execute();
-        if($stmt->rowCount() > 0){
+        if ($stmt->rowCount() > 0) {
             return true;
         }
         return false;

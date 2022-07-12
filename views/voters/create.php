@@ -3,7 +3,7 @@
         <?php require('./views/layouts/sidebar.php') ?>
         <!-- sidebar == div.col-xs-12.col-md-3 -->
         <div class="col-xs-12 col-md-9">
-            <h4 class="alert text-center">Voters<a href="?page=voters&subpage=view" class="btn btn-primary add-btn"><i class="fa fa-arrow-left"></i> Go Back</a></h4>
+            <h4 class="alert text-center">Voters<a onclick="history.back()" class="btn btn-primary add-btn"><i class="fa fa-arrow-left"></i> Go Back</a></h4>
             <form action="" method="post" class="row" id="form">
                 <div class="col-xs-12 col-md-7 mb-3">
                     <input type="text" name="names" class="form-control must-fill" placeholder="Voter's Full Names" value="<?= isset($_SESSION['old']['names']) ? $_SESSION['old']['names'] : ''; ?>">

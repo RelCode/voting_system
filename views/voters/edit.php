@@ -3,8 +3,9 @@
         <?php require('./views/layouts/sidebar.php') ?>
         <!-- sidebar == div.col-xs-12.col-md-3 -->
         <div class="col-xs-12 col-md-9">
-            <h4 class="alert text-center">Voters<a href="?page=voters&subpage=view" class="btn btn-primary add-btn"><i class="fa fa-arrow-left"></i> Go Back</a></h4>
+            <h4 class="alert text-center">Edit Voter's Bio<a onclick="history.back()" class="btn btn-primary add-btn"><i class="fa fa-arrow-left"></i> Go Back</a></h4>
             <form action="" method="post" class="row" id="form">
+                <input type="hidden" name="id" value="<?= $data[0]['id'] ?>">
                 <div class="col-xs-12 col-md-7 mb-3">
                     <input type="text" name="names" class="form-control must-fill" placeholder="Voter's Full Names" value="<?= $data[0]['names']; ?>">
                 </div>
@@ -40,7 +41,7 @@
                 </div>
                 <?= isset($_SESSION['validation']['gender']) ? '<div class="col-xs-12 col-md-5 mb-3"><i class="text text-danger">' . $_SESSION['validation']['gender'] . '</i></div>' : ''; ?>
                 <div class="col-xs-12 col-md-7 mb-3">
-                    <input type="submit" name="create" value="Submit" class="btn btn-primary form-control">
+                    <input type="submit" name="update" value="Submit" class="btn btn-primary form-control" disabled>
                 </div>
                 <?php
                 if (isset($_SESSION['alert'])) {

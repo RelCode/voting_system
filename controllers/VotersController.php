@@ -3,23 +3,28 @@ require_once('./library/Controller.php');
 class VotersController extends Library\Controller{
     public $count = 0;
     private $subpage;
-    public function __construct()
-    {
+    public function __construct() {
         $this->subpage = isset($_GET['subpage']) ? $_GET['subpage'] : 'view';
         $this->votersModel = $this->model('voters');
     }
 
     public function index(){
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        //     if(isset($_POST['create'])){
+        //         $this->createVoter($_POST);
+        //     }elseif(isset($_POST['update'])){
+        //         $this->updateVoter($_POST);
+        //     }
+        // }
+        if($this->subpage == 'create'){
             if(isset($_POST['create'])){
                 $this->createVoter($_POST);
-            }elseif(isset($_POST['update'])){
-                //update voter's information
             }
-        }
-        if($this->subpage == 'create'){
             $data = $this->votersModel->fetchAreas();
         }elseif($this->subpage == 'edit'){
+            if (isset($_POST['update'])) {
+                $this->updateVoter($_POST);
+            }
             $id = isset($_GET['id']) ? htmlentities($_GET['id'],ENT_QUOTES) : '';
             $data = $this->votersModel->allWhereIdRow('voters','id',$id);
             $data[0]['areas'] = $this->votersModel->fetchAreas();
@@ -49,6 +54,24 @@ class VotersController extends Library\Controller{
         }
         $_SESSION['alert']['class'] = 'alert-success';
         $_SESSION['alert']['message'] = 'voter successfully registered';
+        return true;
+    }
+
+    public function updateVoter($post){
+        if (!$this->validateInput($post)) {
+            return false;
+        }
+        if ($this->votersModel->allWhereIdCompare('voters','id', $post['id'], 'id_number', $post['id_number'])) {
+            $_SESSION['validation']['id_number'] = 'ID Number Already Registered';
+            return false;
+        }
+        if (!$this->votersModel->updateVoterData($post)) {
+            $_SESSION['alert']['class'] = 'alert-danger';
+            $_SESSION['alert']['message'] = 'Error Occured. Try Again';
+            return false;
+        }
+        $_SESSION['alert']['class'] = 'alert-success';
+        $_SESSION['alert']['message'] = 'voter successfully updated';
         return true;
     }
 
