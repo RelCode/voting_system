@@ -41,15 +41,11 @@
                 <div class="col-xs-12 col-md-7 mb-3">
                     <input type="submit" name="create" value="Submit" class="btn btn-primary form-control" disabled>
                 </div>
-                <?php
-                    if(isset($_SESSION['alert'])){
-                        ?>
-                            <div class="col-xs-12 col-md-7 mb-3">
-                                <h class="alert <?= $_SESSION['alert']['class'] ?> w-100"><?= $_SESSION['alert']['message'] ?></h>
-                            </div>
-                        <?php
-                    }
+                <div class="col-xs-12 col-md-7 mb-3">
+                <?= isset($_SESSION['alert']) ? //if error is set ? render the following  h4 alert element
+                    '<h4 class="alert '.$_SESSION['alert']['class'].' w-100">'.$_SESSION['alert']['message'].'</h4>' : '' //else, nothing
                 ?>
+                </div>
             </form>
         </div>
     </div>

@@ -74,6 +74,8 @@ function confirmDelete(e){
 
 //used on create.candidate page for toggling radio button values and text styling
 var radios = document.querySelectorAll('.selected-radio');
+var runningFor = [];//hold an array of values candidate is running for
+var runningIn = [];//hold an array of values candidate is running in
 if(radios){
     for(const radio of radios){
         radio.addEventListener('click',function(){
@@ -83,7 +85,34 @@ if(radios){
                 spanText.classList.remove('text-secondary')
                 spanText.classList.add('text-success');
                 spanText.innerText = radioTxt;
+                candidacyValues(this.id)
             }
         })
+    }
+}
+
+function candidacyValues(id){
+    if(id != ''){
+        let canFor = id.substr((id.indexOf('-') + 1));
+        let canIn = id.split('-')[0];
+        if(runningFor == ''){
+            runningFor.push(canFor);
+            runningIn.push(canIn);
+        }else{
+            let exists = false;//variable to be used to check if a value has already been selected
+            for (let i = 0; i < runningFor.length; i++) {
+                if(runningFor[i] == canFor){
+                    exists = true;
+                    runningFor[i] = canFor;
+                    runningIn[i] = canIn;
+                }
+            }
+            if(exists == false){ 
+                runningFor.push(canFor);
+                runningIn.push(canIn);
+            }
+        }
+        document.querySelector('#for').value = runningFor.join('%20')
+        document.querySelector('#in').value = runningIn.join('%20')
     }
 }
