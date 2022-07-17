@@ -14,18 +14,6 @@ class Voters extends Database {
         }
         return $data;
     }
-    public function fetchAreas(){
-        $data = [];
-        $query = 'SELECT * FROM areas ORDER BY area ASC';
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        if($stmt->rowCount() > 0){
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                array_push($data,$row);
-            }
-        }
-        return $data;
-    }
 
     public function storeVoterData($post){
         $pin = mt_rand(1000,9999);

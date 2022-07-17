@@ -15,6 +15,19 @@ class Database{
             echo 'ERROR: ' . $exception;
         }
     }
+    public function fetchAreas()
+    {
+        $data = [];
+        $query = 'SELECT * FROM areas ORDER BY area ASC';
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                array_push($data, $row);
+            }
+        }
+        return $data;
+    }
     public function countAll($table){//count all table entries
         $query = 'SELECT * FROM '.$table.'';
         $stmt = $this->db->query($query);

@@ -28,11 +28,11 @@ if(form){
     var inputs = document.querySelectorAll('.must-fill');
     if(inputs){
         var submitBtn = document.querySelector('input[type=submit]');
-    }
-    for(const input of inputs){
-        input.addEventListener('change',function(){
-            submitBtn.removeAttribute('disabled')
-        })
+        for(const input of inputs){
+            input.addEventListener('change',function(){
+                submitBtn.removeAttribute('disabled')
+            })
+        }
     }
 }
 
@@ -72,6 +72,18 @@ function confirmDelete(e){
     }
 }
 
-function getUrlId(e){
-    // let url = new URL(e.parentElement)
+//used on create.candidate page for toggling radio button values and text styling
+var radios = document.querySelectorAll('.selected-radio');
+if(radios){
+    for(const radio of radios){
+        radio.addEventListener('click',function(){
+            let radioTxt = this.parentElement.innerText;
+            let spanText = this.closest('.mb-3').querySelector('span').querySelector('i'); 
+            if(radioTxt != ''){
+                spanText.classList.remove('text-secondary')
+                spanText.classList.add('text-success');
+                spanText.innerText = radioTxt;
+            }
+        })
+    }
 }

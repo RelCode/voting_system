@@ -11,4 +11,4 @@
     }
 
     //a list of navigatable pages in the application
-    $navigatable = ['login','home','voters'];
+    $navigatable = ['login','home','voters','candidates'];

@@ -39,7 +39,7 @@
                 </div>
                 <?= isset($_SESSION['validation']['gender']) ? '<div class="col-xs-12 col-md-5 mb-3"><i class="text text-danger">' . $_SESSION['validation']['gender'] . '</i></div>' : ''; ?>
                 <div class="col-xs-12 col-md-7 mb-3">
-                    <input type="submit" name="create" value="Submit" class="btn btn-primary form-control">
+                    <input type="submit" name="create" value="Submit" class="btn btn-primary form-control" disabled>
                 </div>
                 <?php
                     if(isset($_SESSION['alert'])){

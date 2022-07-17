@@ -1,5 +1,5 @@
 <div class="container" id="main-container">
-    <form action="" method="post" class="row pt-5" id="form">
+    <form action="" method="post" class="row row-block pt-5" id="form">
         <?= isset($_SESSION['validation']['email']) ? '<div class="col-xs-12 col-md-4 offset-md-4">
             <span class="text text-danger">'.$_SESSION['validation']['email'].'</span>
         </div>' : ''; ?>
