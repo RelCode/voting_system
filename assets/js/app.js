@@ -37,13 +37,20 @@ if(form){
 }
 
 function confirmDelete(e){
-    const url = e.previousElementSibling.getAttribute('href').split('=');
-    var id = url[url.length - 1];
-    var id_number = e.parentElement.parentElement.querySelectorAll('td')[1].innerText;
-    if(/[0-9]/.test(id_number) && /[0-9]/.test(id)){
+    let type = e.dataset.action;
+    const url = e.previousElementSibling.getAttribute('href').split('=');//separate url string into array
+    var id = url[url.length - 1];//get id from url array, which is the last element
+    if(type == 'voter'){
+        var identifier = e.parentElement.parentElement.querySelectorAll('td')[1].innerText;//
+        var confirmText = 'Delete ID Number: '+identifier;
+    }else if(type == 'candidate'){
+        var identifier = e.parentElement.parentElement.querySelectorAll('td')[0].innerText;//
+        var confirmText = 'Delete Candidate: '+identifier;
+    }
+    if(identifier != '' && /[0-9]/.test(id)){
         swal({
             title: "Are you sure?",
-            text: "Delete ID Number: "+id_number,
+            text: confirmText,
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -54,7 +61,7 @@ function confirmDelete(e){
                     if(xmlHttp.responseText == '404'){
                         swal({title:'Error',text:'Invalid Selection'})
                     }else if(xmlHttp.responseText == '200'){
-                        swal('voter deleted',{icon:'success'})
+                        swal(type + ' deleted',{icon:'success'})
                         .then((closed) => {
                             location.reload();
                         })
@@ -64,7 +71,7 @@ function confirmDelete(e){
                 }
                 xmlHttp.open('POST',actionUrl);
                 xmlHttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-                xmlHttp.send('action=deleteVoter&id='+id+'&id_number='+id_number)
+                xmlHttp.send('action=delete'+type+'&id='+id+'&identifier='+identifier)
             }
         });
     }else{

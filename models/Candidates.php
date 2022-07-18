@@ -6,10 +6,10 @@ class Candidates extends Database {
         $per_page = 5;
         $from = ($per_page * $no) - $per_page;
         if($filter == 'all'){
-            $query = 'SELECT * FROM candidates ORDER BY names ASC LIMIT ' . $from . ', ' . $per_page . '';
+            $query = 'SELECT * FROM candidates WHERE soft_delete = "N" ORDER BY names ASC LIMIT ' . $from . ', ' . $per_page . '';
         }else{
             $filter = '%'.$filter.'%';
-            $query = 'SELECT * FROM candidates WHERE candidate_for LIKE '.$filter.' ORDER BY names ASC LIMIT ' . $from . ', ' . $per_page . '';
+            $query = 'SELECT * FROM candidates WHERE soft_delete = "N" AND candidate_for LIKE '.$filter.' ORDER BY names ASC LIMIT ' . $from . ', ' . $per_page . '';
         }
         $stmt = $this->db->query($query);
         if($stmt->rowCount() > 0){

@@ -26,7 +26,7 @@
                             $tr .= '<td>'.$voter['age'].'</td>';
                             $tr .= '<td>'.ucfirst($voter['gender']).'</td>';
                             $tr .= '<td>'.ucwords($voter['area'] . ' - ' .$voter['district'] .' ('.$voter['code'].') ').'</td>';
-                            $tr .= '<td><a href="?page=voters&subpage=edit&id='.$voter['id'].'" class="btn btn-warning">Edit</a> <button class="btn btn-danger" onclick="confirmDelete(this)">Delete</button></td>';
+                            $tr .= '<td><a href="?page=voters&subpage=edit&id='.$voter['id'].'" class="btn btn-warning">Edit</a> <button class="btn btn-danger" onclick="confirmDelete(this)" data-action="voter">Delete</button></td>';
                             $tr .= '</tr>';
                         }
                         echo $tr;

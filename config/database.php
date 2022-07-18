@@ -29,7 +29,7 @@ class Database{
         return $data;
     }
     public function countAll($table){//count all table entries
-        $query = 'SELECT * FROM '.$table.'';
+        $query = 'SELECT * FROM '.$table.' WHERE soft_delete = "N"';
         $stmt = $this->db->query($query);
         return $stmt->rowCount();   
     }
