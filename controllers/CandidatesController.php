@@ -11,11 +11,21 @@ class CandidatesController extends Library\Controller {
 
     public function index(){
         $data = [];
+        $currentValues = [];
         if($this->subpage == 'create'){
             if(isset($_POST['create'])){
                 $this->createCandidate($_POST);
             }
             $data = $this->candidatesModel->fetchAreas();
+        }elseif($this->subpage == 'edit'){
+            // var_dump($_POST);
+            $id = isset($_GET['id']) ? htmlentities($_GET['id'], ENT_QUOTES) : '';
+            if(isset($_POST['update'])){
+                $this->updateCandidate($_POST,$id);
+            }
+            $data = $this->candidatesModel->allWhereIdRow('candidates','id',$id);
+            $data['areas'] = $this->candidatesModel->fetchAreas();
+            $currentValues = $this->getCandidacy($id);
         }else{
             // ($this->subpage == 'view'){
             $no = isset($_GET['no']) ? htmlentities($_GET['no'],ENT_QUOTES) : 1;
@@ -23,13 +33,47 @@ class CandidatesController extends Library\Controller {
             $data = $this->candidatesModel->fetchCandidates($no,$filter);
             $this->count = $this->candidatesModel->countAll('candidates');
         }
-        return $this->view('candidates/'.$this->subpage,$data,$this->count);
+        return $this->view('candidates/'.$this->subpage,$data,$currentValues,$this->count);
+    }
+
+    public function getCandidacy($id){
+        $candidacy = ['area','district','ward'];
+        $candidateOptions = [];
+        $cans = $this->candidatesModel->allWhereIdRow('candidacy', 'candidate', $id);
+        for ($i=0; $i < count($candidacy); $i++) { 
+            for ($j=0; $j < count($cans); $j++) { 
+                if($candidacy[$i] == $cans[$j]['running_for']){
+                    $candidateOptions[$candidacy[$i]] = $this->candidatesModel->allWhereIdRow('areas','id',$cans[$j]['running_in']);
+                }
+            }
+        }
+        return $candidateOptions;
+    }
+
+    public function updateCandidate($post,$id){
+        if (empty($_POST['running_for']) || empty($_POST['running_in'])) {
+            $this->candidacyError();
+            $this->oldValues($post);
+            return false;
+        }
+        if (!$this->validateName($post['names'])) {
+            $this->oldValues($post);
+            return false;
+        }
+        if (!$this->candidatesModel->updateCandidate($post,$id)) {
+            $_SESSION['alert']['message'] = 'Operation Failed, Try Again';
+            $_SESSION['alert']['class'] = 'alert-danger';
+            $this->oldValues($post);
+            return false;
+        }
+        $_SESSION['alert']['message'] = 'Candidate Successfully Updated';
+        $_SESSION['alert']['class'] = 'alert-success';
+        return true;
     }
 
     public function createCandidate($post){
         if(empty($_POST['running_for']) || empty($_POST['running_in'])){
-            $_SESSION['alert']['message'] = 'Select At Least One Candidacy';
-            $_SESSION['alert']['class'] = 'alert-danger';
+            $this->candidacyError();
             $this->oldValues($post);
             return false;
         }
@@ -62,6 +106,12 @@ class CandidatesController extends Library\Controller {
             $_SESSION['error']['names'] = 'Name Must Be Letters Only';
             return false;
         }
+        return true;
+    }
+
+    public function candidacyError(){
+        $_SESSION['alert']['message'] = 'Select At Least One Candidacy';
+        $_SESSION['alert']['class'] = 'alert-danger';
         return true;
     }
 

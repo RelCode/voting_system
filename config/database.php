@@ -76,5 +76,12 @@ class Database{
         }
         return $data;
     }
+    public function deleteById($table,$column,$id){
+        $query = 'DELETE FROM '.$table.' WHERE '.$column.' = :id';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+        return true;
+    }
 }
 date_default_timezone_set('Africa/Johannesburg');

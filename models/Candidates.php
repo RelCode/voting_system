@@ -43,4 +43,29 @@ class Candidates extends Database {
         }
         return false;
     }
+
+    public function updateCandidate($post,$id){
+        $query = 'UPDATE candidates SET names = :names, political_group = :group WHERE id = :id';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':names', $post['names']);
+        $stmt->bindParam(':group', $post['political_group']);
+        $stmt->bindParam(':id',$id);
+        if ($stmt->execute()) {
+            $this->deleteById('candidacy','candidate',$id);
+            $for = explode('%20', $post['running_for']);
+            $in = explode('%20', $post['running_in']);
+            for ($i = 0; $i < count($for); $i++) {
+                $query = 'INSERT INTO candidacy (candidate, running_for, running_in) VALUES (:id,:for,:in)';
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':id', $id);
+                $stmt->bindParam(':for', $for[$i]);
+                $stmt->bindParam(':in', $in[$i]);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }
